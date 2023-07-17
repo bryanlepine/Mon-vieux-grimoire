@@ -1,0 +1,172 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+      "title": "API de gestion des livres",
+      "version": "1.0.0",
+      "description": "Documentation de l'API de gestion des livres"
+    },
+    "paths": {
+      "/api/books": {
+        "get": {
+          "summary": "Obtenir la liste des livres",
+          "responses": {
+            "200": {
+              "description": "Liste des livres récupérée avec succès"
+            }
+          }
+        },
+        "post": {
+          "summary": "Créer un nouveau livre",
+          "responses": {
+            "201": {
+              "description": "Livre créé avec succès"
+            }
+          }
+        }
+      },
+      "/api/books/{id}": {
+        "get": {
+          "summary": "Obtenir un livre par ID",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "string"
+              },
+              "description": "ID du livre"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Livre récupéré avec succès"
+            }
+          }
+        },
+        "put": {
+          "summary": "Modifier un livre",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "string"
+              },
+              "description": "ID du livre"
+            },
+            {
+              "name": "book",
+              "in": "formData",
+              "required": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "year": {
+                    "type": "number"
+                  },
+                  "author": {
+                    "type": "string"
+                  },
+                  "genre": {
+                    "type": "string"
+                  }
+                }
+              },
+              "description": "Données du livre à modifier"
+            },
+            {
+              "name": "image",
+              "in": "formData",
+              "required": false,
+              "schema": {
+                "type": "file"
+              },
+              "description": "Image du livre"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Livre modifié avec succès"
+            }
+          }
+        },
+        "delete": {
+          "summary": "Supprimer un livre",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "string"
+              },
+              "description": "ID du livre"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Livre supprimé avec succès"
+            }
+          }
+        }
+      },
+      "/api/books/bestrating": {
+        "get": {
+          "summary": "Obtenir les livres les mieux notés",
+          "responses": {
+            "200": {
+              "description": "Liste des livres les mieux notés récupérée avec succès"
+            }
+          }
+        }
+      },
+      "/api/books/{id}/rating": {
+        "post": {
+          "summary": "Noter un livre",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "string"
+              },
+              "description": "ID du livre"
+            },
+            {
+              "name": "userId",
+              "in": "formData",
+              "required": true,
+              "schema": {
+                "type": "string"
+              },
+              "description": "ID de l'utilisateur"
+            },
+            {
+              "name": "grade",
+              "in": "formData",
+              "required": true,
+              "schema": {
+                "type": "number"
+              },
+              "description": "Note du livre"
+            }
+          ],
+          "responses": {
+            "201": {
+              "description": "Livre noté avec succès"
+            }
+          }
+        }
+      }
+    }
+  }
+  
