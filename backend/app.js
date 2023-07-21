@@ -6,9 +6,9 @@ const bookRoute = require('./routes/book');
 const path = require('path');
 const swaggerConfig = require('../backend/swagger/swagger');
 
-
+/*'mongodb+srv://lepinebryan:48s4kHmbtE1gIyrK@clustersimple.ap6nkdr.mongodb.net/?retryWrites=true&w=majority'*/
 const mongoose = require('mongoose');
-mongoose.connect('mongodb+srv://lepinebryan:48s4kHmbtE1gIyrK@clustersimple.ap6nkdr.mongodb.net/?retryWrites=true&w=majority',
+mongoose.connect('mongodb+srv://bryanlepine5:v1oBH7aFnTGcJY3j@cluster0.avr8mlt.mongodb.net/?retryWrites=true&w=majority',
   { useNewUrlParser: true,
     useUnifiedTopology: true })
   .then(() => console.log('Connexion à MongoDB réussie !'))

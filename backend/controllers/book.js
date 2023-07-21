@@ -14,7 +14,7 @@ exports.getSingleBook = (req, res, next) => {
 }
 
 exports.getBestRatingBooks = (req, res, next) => {
-    Book.find().sort({ rating: -1 }).limit(3)
+    Book.find().sort({ averageRating: -1 }).limit(3)
     .then(books => res.status(200).json(books))
     .catch(error => res.status(400).json({error}));
 }
@@ -36,6 +36,7 @@ exports.createBook = (req, res, next) => {
     imageUrl,
     userId
   });
+  console.log(book);
 
   book
     .save()
@@ -85,31 +86,53 @@ exports.modifyBook = (req, res, next) => {
         });
  }
 
- /**exports.createRatingBook = (req, res, next)=> {
-    return 4 
- }**/
-
  exports.createRatingBook = (req, res, next) => {
-    
-    for(let i = 0 ; i < book.ratings.length; i++){
-        if(book.ratings[i].userId === req.body.userId){
-          return res.status(400).json({ message: 'User has already rated this book' });
-        }
-      }
+    const { id } = req.params;
+    const { userId, rating} = req.body;
+   
   
-    book.ratings.push({
-        userId: req.body.userId,
-        grade: req.body.grade
-    });
+    Book.findById(id)
+      .then(book => {
+        if (!book) {
+          return res.status(404).json({ error: 'Book not found' });
+        }
 
-    let sum = 0; 
-    for(let i = 0 ; i < book.ratings.length; i++){
-        sum += book.ratings[i].grade;
-    }
-    book.averageRating = sum / book.ratings.length;
- 
-   book.save()
-   .then(() => { res.status(201).json({message: 'Objet enregistré !'})})
-   .catch(error => { res.status(400).json( { error })})
-}; 
+   console.log(book);
+
+        for (let i = 0; i < book.ratings.length; i++) {
+          if (book.ratings[i].userId === userId) {
+            return res.status(400).json({ message: 'L utilisateur a déjà noté ce livre' });
+          }
+        }
+  
+        book.ratings.push({
+          userId : userId, 
+          grade : rating
+        });
+
+       
+  console.log(book);
+
+        let sum = 0;
+        for (let i = 0; i < book.ratings.length; i++) {
+          sum += book.ratings[i].grade;
+        
+        }
+        
+        averageRating = sum / book.ratings.length;
+
+       book.averageRating = parseInt(averageRating);
+        console.log(book.averageRating);
+  console.log(book);
+
+        return  Book.updateOne({ _id: req.params.id }, { ratings:book.ratings, averageRating:book.averageRating })
+        .then(data=> {
+          if(data){
+            res.status(201).json(book)
+          }
+        })
+        .catch(error => res.status(400).json({ error }))
+      })
+      .catch(error => res.status(400).json({ message:'il y a eu une erreur' }));
+  };
 
